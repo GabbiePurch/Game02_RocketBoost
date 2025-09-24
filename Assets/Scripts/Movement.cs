@@ -3,14 +3,18 @@ using UnityEngine.InputSystem;
 
 public class Movement : MonoBehaviour
 {
-    
-    void Start()
+    [SerializeField] InputAction thrust;
+
+    private void OnEnable()
     {
-        Debug.Log("");
+        thrust.Enable();
     }
 
-    void Update()
+    private void Update()
     {
-        
+        if (thrust.IsPressed())
+        {
+            Debug.Log("Dang, I Need Some Space");
+        }
     }
 }
