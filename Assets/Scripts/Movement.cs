@@ -4,6 +4,14 @@ using UnityEngine.InputSystem;
 public class Movement : MonoBehaviour
 {
     [SerializeField] InputAction thrust;
+    [SerializeField] float thrustStrength = 100f;
+
+    Rigidbody rb;
+
+    private void Start()
+    {
+        rb = GetComponent<Rigidbody>();
+    }
 
     private void OnEnable()
     {
@@ -14,7 +22,7 @@ public class Movement : MonoBehaviour
     {
         if (thrust.IsPressed())
         {
-            Debug.Log("Dang, I Need Some Space");
+            rb.AddRelativeForce(Vector3.up * thrustStrength * Time.fixedDeltaTime);
         }
     }
 }
