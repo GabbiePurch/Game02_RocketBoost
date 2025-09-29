@@ -993,7 +993,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 987481051487662794, guid: a58ed01f6805dfa449d613d6f339adcb, type: 3}
       propertyPath: rotationStrength
-      value: 50
+      value: 45
+      objectReference: {fileID: 0}
+    - target: {fileID: 1274729352089216843, guid: a58ed01f6805dfa449d613d6f339adcb, type: 3}
+      propertyPath: m_Mass
+      value: 0.15
       objectReference: {fileID: 0}
     - target: {fileID: 1274729352089216843, guid: a58ed01f6805dfa449d613d6f339adcb, type: 3}
       propertyPath: m_Constraints
