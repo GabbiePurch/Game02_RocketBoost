@@ -1,7 +1,10 @@
 using UnityEngine;
+using TMPro;
 
 public class CollisionHandler : MonoBehaviour
 {
+    [SerializeField] TextMeshProUGUI gameText;
+    int fuel = 0;
     private void OnCollisionEnter(Collision other)
     {
         switch (other.gameObject.tag)
@@ -10,10 +13,12 @@ public class CollisionHandler : MonoBehaviour
                 Debug.Log("Everything Looks Good");
                 break;
             case "Finish":
-                Debug.Log("You're alldone, welcome to our country");
+                Debug.Log("You're all done, welcome to our country");
                 break;
             case "Fuel":
-                Debug.Log("Why did you pick me up, I'm not in this game");
+                fuel = fuel + 5;
+                gameText.text = "Fuel: " + fuel;
+                Destroy(other.gameObject);
                 break;
             default:
                 Debug.Log("You crashed dummy!");
