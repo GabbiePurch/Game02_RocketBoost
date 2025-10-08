@@ -7,8 +7,10 @@ public class CollisionHandler : MonoBehaviour
 {
     [SerializeField] TextMeshProUGUI gameText;
     [SerializeField] float levelLoadDelay = 2f;
-    [SerializeField] AudioClip sucess;
-    [SerializeField] AudioClip crash;
+    [SerializeField] AudioClip sucessSFX;
+    [SerializeField] AudioClip crashSFX;
+    [SerializeField] ParticleSystem sucessParticals;
+    [SerializeField] ParticleSystem crashParticals;
 
     AudioSource audioSource;
 
@@ -48,7 +50,8 @@ public class CollisionHandler : MonoBehaviour
     {
         isControlable = false;
         audioSource.Stop();
-        audioSource.PlayOneShot(crash);
+        audioSource.PlayOneShot(crashSFX);
+        crashParticals.Play();
         GetComponent<Movement>().enabled = false;
         Invoke("ReloadLevel", levelLoadDelay);
     }
@@ -57,7 +60,8 @@ public class CollisionHandler : MonoBehaviour
     {
         isControlable = false;
         audioSource.Stop();
-        audioSource.PlayOneShot(sucess);
+        audioSource.PlayOneShot(sucessSFX);
+        sucessParticals.Play();
         GetComponent<Movement>().enabled = false;
         Invoke("LoadNextLevel", levelLoadDelay);
     }
