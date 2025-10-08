@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 public class CollisionHandler : MonoBehaviour
 {
     [SerializeField] TextMeshProUGUI gameText;
+    [SerializeField] float levelLoadDelay = 2f;
     int fuel = 0;
     private void OnCollisionEnter(Collision other)
     {
@@ -14,7 +15,7 @@ public class CollisionHandler : MonoBehaviour
                 Debug.Log("Everything Looks Good");
                 break;
             case "Finish":
-                LoadNextLevel();
+                StartSucessSequence();
                 break;
             case "Fuel":
                 fuel = fuel + 5;
@@ -22,9 +23,21 @@ public class CollisionHandler : MonoBehaviour
                 Destroy(other.gameObject);
                 break;
             default:
-                ReloadLevel();
+                StartCrashSequence();
                 break;
         }
+    }
+
+    void StartCrashSequence()
+    {
+        GetComponent<Movement>().enabled = false;
+        Invoke("ReloadLevel", levelLoadDelay);
+    }
+
+    void StartSucessSequence()
+    {
+        GetComponent<Movement>().enabled = false;
+        Invoke("LoadNextLevel", levelLoadDelay);
     }
 
     void LoadNextLevel()
@@ -40,11 +53,10 @@ public class CollisionHandler : MonoBehaviour
         SceneManager.LoadScene(nextScene);
     }
 
-    
+
     void ReloadLevel()
     {
         int currentScene = SceneManager.GetActiveScene().buildIndex;
         SceneManager.LoadScene(currentScene);
     }
-
 }
