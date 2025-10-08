@@ -1,6 +1,7 @@
 using UnityEngine;
 using TMPro;
 using UnityEngine.SceneManagement;
+using NUnit.Framework;
 
 public class CollisionHandler : MonoBehaviour
 {
@@ -10,6 +11,8 @@ public class CollisionHandler : MonoBehaviour
     [SerializeField] AudioClip crash;
 
     AudioSource audioSource;
+
+    bool isControlable = true;
     int fuel = 0;
 
     void Start()
@@ -20,27 +23,31 @@ public class CollisionHandler : MonoBehaviour
 
     private void OnCollisionEnter(Collision other)
     {
+        if (!isControlable) { return; }
+
         switch (other.gameObject.tag)
-        {
-            case "Friendly":
-                Debug.Log("Everything Looks Good");
-                break;
-            case "Finish":
-                StartSucessSequence();
-                break;
-            case "Fuel":
-                fuel = fuel + 5;
-                gameText.text = "Fuel: " + fuel;
-                Destroy(other.gameObject);
-                break;
-            default:
-                StartCrashSequence();
-                break;
-        }
+            {
+                case "Friendly":
+                    Debug.Log("Everything Looks Good");
+                    break;
+                case "Finish":
+                    StartSucessSequence();
+                    break;
+                case "Fuel":
+                    fuel = fuel + 5;
+                    gameText.text = "Fuel: " + fuel;
+                    Destroy(other.gameObject);
+                    break;
+                default:
+                    StartCrashSequence();
+                    break;
+            }
     }
 
     void StartCrashSequence()
     {
+        isControlable = false;
+        audioSource.Stop();
         audioSource.PlayOneShot(crash);
         GetComponent<Movement>().enabled = false;
         Invoke("ReloadLevel", levelLoadDelay);
@@ -48,6 +55,8 @@ public class CollisionHandler : MonoBehaviour
 
     void StartSucessSequence()
     {
+        isControlable = false;
+        audioSource.Stop();
         audioSource.PlayOneShot(sucess);
         GetComponent<Movement>().enabled = false;
         Invoke("LoadNextLevel", levelLoadDelay);
