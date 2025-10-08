@@ -2,6 +2,7 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.SceneManagement;
 using NUnit.Framework;
+using UnityEngine.InputSystem;
 
 public class CollisionHandler : MonoBehaviour
 {
@@ -15,6 +16,7 @@ public class CollisionHandler : MonoBehaviour
     AudioSource audioSource;
 
     bool isControlable = true;
+    bool isCollidable = true;
     int fuel = 0;
 
     void Start()
@@ -22,28 +24,45 @@ public class CollisionHandler : MonoBehaviour
         audioSource = GetComponent<AudioSource>();
     }
 
+    void Update()
+    {
+        RespondtoDebugKeys();
+    }
+
+    void RespondtoDebugKeys()
+    {
+        if (Keyboard.current.lKey.wasPressedThisFrame)
+        {
+            LoadNextLevel();
+        }
+
+        else if (Keyboard.current.cKey.wasPressedThisFrame)
+        {
+            isCollidable = !isCollidable;
+        }
+    }
 
     private void OnCollisionEnter(Collision other)
     {
-        if (!isControlable) { return; }
+        if (!isControlable || !isCollidable) { return; }
 
         switch (other.gameObject.tag)
-            {
-                case "Friendly":
-                    Debug.Log("Everything Looks Good");
-                    break;
-                case "Finish":
-                    StartSucessSequence();
-                    break;
-                case "Fuel":
-                    fuel = fuel + 5;
-                    gameText.text = "Fuel: " + fuel;
-                    Destroy(other.gameObject);
-                    break;
-                default:
-                    StartCrashSequence();
-                    break;
-            }
+        {
+            case "Friendly":
+                Debug.Log("Everything Looks Good");
+                break;
+            case "Finish":
+                StartSucessSequence();
+                break;
+            case "Fuel":
+                fuel = fuel + 5;
+                gameText.text = "Fuel: " + fuel;
+                Destroy(other.gameObject);
+                break;
+            default:
+                StartCrashSequence();
+                break;
+        }
     }
 
     void StartCrashSequence()
