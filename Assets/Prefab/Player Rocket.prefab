@@ -181,6 +181,7 @@ MonoBehaviour:
     m_Flags: 0
   thrustStrength: 75
   rotationStrength: 45
+  mainEngine: {fileID: 8300000, guid: f3c168eaeba0fc444aa30b92c5476932, type: 3}
 --- !u!82 &7939681469006233298
 AudioSource:
   m_ObjectHideFlags: 0
@@ -192,7 +193,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
-  m_Resource: {fileID: 8300000, guid: f3c168eaeba0fc444aa30b92c5476932, type: 3}
+  m_Resource: {fileID: 0}
   m_PlayOnAwake: 0
   m_Volume: 0.173
   m_Pitch: 1
@@ -291,6 +292,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CollisionHandler
   gameText: {fileID: 0}
+  levelLoadDelay: 2
+  sucess: {fileID: 8300000, guid: d97f5e5b9ce652847b001dd78d377acf, type: 3}
+  crash: {fileID: 8300000, guid: 71e81be2046c1e942b7f1626916ce71d, type: 3}
 --- !u!1001 &1248966066753835607
 PrefabInstance:
   m_ObjectHideFlags: 0
