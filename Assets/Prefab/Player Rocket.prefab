@@ -311,6 +311,8 @@ MonoBehaviour:
   sucessParticals: {fileID: 3556014069546388834}
   crashParticals: {fileID: 8976340486417646231}
   screenFader: {fileID: 0}
+  sceneFadeDuration: 1
+  sceneController: {fileID: 475630779924914109, guid: f584ba7465aa76e4c8d08bf579a8423f, type: 3}
 --- !u!114 &2711261708880057115
 MonoBehaviour:
   m_ObjectHideFlags: 0

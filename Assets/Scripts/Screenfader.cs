@@ -1,58 +1,58 @@
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
+using System.Collections;
 
 public class Screenfader : MonoBehaviour
 {
-    public Image fadeImage;
-    public float fadeSpeed = 1f;
+    private Image sceneFadeImage;
 
-    private bool isFadingIn = false;
-    private bool isFadingOut = false;
-
-    void Start()
+    void Awake()
     {
-        fadeImage.color = new Color(0, 0, 0, 1);
-        FadeOut();
+        sceneFadeImage = GetComponent<Image>();
+
     }
-    void Update()
+
+    public IEnumerator FadeInCoroutine(float duration)
     {
-        if (isFadingIn)
+        Color startColor = new Color(sceneFadeImage.color.r, sceneFadeImage.color.g, sceneFadeImage.color.b, 1);
+        Color targetColor = new Color(sceneFadeImage.color.r, sceneFadeImage.color.g, sceneFadeImage.color.b, 0);
+
+        gameObject.SetActive(true);
+
+        yield return FadeCoroutine(startColor, targetColor, duration);
+
+        gameObject.SetActive(false);
+    }
+
+    public IEnumerator FadeOutCoroutine(float duration)
+    {
+        Color startColor = new Color(sceneFadeImage.color.r, sceneFadeImage.color.g, sceneFadeImage.color.b, 0);
+        Color targetColor = new Color(sceneFadeImage.color.r, sceneFadeImage.color.g, sceneFadeImage.color.b, 1);
+
+        gameObject.SetActive(true);
+
+        yield return FadeCoroutine(startColor, targetColor, duration);
+    }
+
+
+    private IEnumerator FadeCoroutine(Color startColor, Color targetColor, float duration)
+    {
+        float elapsedTime = 0;
+        float elpasedPrecentage = 0;
+
+
+        while (elpasedPrecentage < 1)
         {
-            Color color = fadeImage.color;
-            color.a += fadeSpeed * Time.deltaTime;
-            fadeImage.color = color;
+            elpasedPrecentage = elapsedTime / duration;
+            sceneFadeImage.color = Color.Lerp(startColor, targetColor, elpasedPrecentage);
 
-            if (color.a >= 1f)
-            {
-                color.a = 1f;
-                fadeImage.color = color;
-                isFadingIn = false;
-            }
+            yield return null;
+            elapsedTime += Time.deltaTime;
         }
-        else if (isFadingOut)
-        {
-            Color color = fadeImage.color;
-            color.a -= fadeSpeed * Time.deltaTime;
-            fadeImage.color = color;
 
-            if (color.a <= 0f)
-            {
-                color.a = 0f;
-                fadeImage.color = color;
-                isFadingOut = false;
-            }
-        }
+        sceneFadeImage.color = targetColor;
     }
 
-    public void FadeIn()
-    {
-        isFadingIn = true;
-        isFadingOut = false;
-    }
 
-    public void FadeOut()
-    {
-        isFadingOut = true;
-        isFadingIn = false;
-    }
 }

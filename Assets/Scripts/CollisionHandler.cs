@@ -4,6 +4,8 @@ using UnityEngine.SceneManagement;
 using NUnit.Framework;
 using UnityEngine.InputSystem;
 using UnityEngine.Rendering.RenderGraphModule;
+using Microsoft.Unity.VisualStudio.Editor;
+using System.Collections;
 
 public class CollisionHandler : MonoBehaviour
 {
@@ -13,7 +15,9 @@ public class CollisionHandler : MonoBehaviour
     [SerializeField] AudioClip crashSFX;
     [SerializeField] ParticleSystem sucessParticals;
     [SerializeField] ParticleSystem crashParticals;
-    [SerializeField] Screenfader screenFader;
+    [SerializeField] float sceneFadeDuration = 1f;
+    [SerializeField] SceneController sceneController;
+    
 
     AudioSource audioSource;
 
@@ -21,9 +25,12 @@ public class CollisionHandler : MonoBehaviour
     bool isControlable = true;
     bool isCollidable = true;
     int fuel = 0;
+    int currentScene;
+
 
     void Start()
     {
+        currentScene = SceneManager.GetActiveScene().buildIndex;
         audioSource = GetComponent<AudioSource>();
 
     }
@@ -68,7 +75,7 @@ public class CollisionHandler : MonoBehaviour
                 break;
         }
     }
-
+    
     void StartCrashSequence()
     {
         isControlable = false;
@@ -76,19 +83,18 @@ public class CollisionHandler : MonoBehaviour
         audioSource.PlayOneShot(crashSFX);
         crashParticals.Play();
         GetComponent<Movement>().enabled = false;
-        screenFader.FadeIn();
-        Invoke("ReloadLevel", levelLoadDelay);
+        sceneController.LoadScene(currentScene);
     }
 
     void StartSucessSequence()
     {
+
         isControlable = false;
         audioSource.Stop();
         audioSource.PlayOneShot(sucessSFX);
         sucessParticals.Play();
         GetComponent<Movement>().enabled = false;
-        screenFader.FadeIn();
-        Invoke("LoadNextLevel", levelLoadDelay);
+        sceneController.LoadScene(currentScene + 1);
     }
 
     void LoadNextLevel()
@@ -99,10 +105,10 @@ public class CollisionHandler : MonoBehaviour
         if (nextScene == SceneManager.sceneCountInBuildSettings)
         {
             nextScene = 0;
-        } 
+        }
 
         SceneManager.LoadScene(nextScene);
-        
+
     }
 
 
@@ -111,4 +117,5 @@ public class CollisionHandler : MonoBehaviour
         int currentScene = SceneManager.GetActiveScene().buildIndex;
         SceneManager.LoadScene(currentScene);
     }
+
 }
