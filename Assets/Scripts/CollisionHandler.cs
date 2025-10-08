@@ -3,6 +3,7 @@ using TMPro;
 using UnityEngine.SceneManagement;
 using NUnit.Framework;
 using UnityEngine.InputSystem;
+using UnityEngine.Rendering.RenderGraphModule;
 
 public class CollisionHandler : MonoBehaviour
 {
@@ -12,8 +13,10 @@ public class CollisionHandler : MonoBehaviour
     [SerializeField] AudioClip crashSFX;
     [SerializeField] ParticleSystem sucessParticals;
     [SerializeField] ParticleSystem crashParticals;
+    [SerializeField] Screenfader screenFader;
 
     AudioSource audioSource;
+
 
     bool isControlable = true;
     bool isCollidable = true;
@@ -22,6 +25,7 @@ public class CollisionHandler : MonoBehaviour
     void Start()
     {
         audioSource = GetComponent<AudioSource>();
+
     }
 
     void Update()
@@ -72,6 +76,7 @@ public class CollisionHandler : MonoBehaviour
         audioSource.PlayOneShot(crashSFX);
         crashParticals.Play();
         GetComponent<Movement>().enabled = false;
+        screenFader.FadeIn();
         Invoke("ReloadLevel", levelLoadDelay);
     }
 
@@ -82,6 +87,7 @@ public class CollisionHandler : MonoBehaviour
         audioSource.PlayOneShot(sucessSFX);
         sucessParticals.Play();
         GetComponent<Movement>().enabled = false;
+        screenFader.FadeIn();
         Invoke("LoadNextLevel", levelLoadDelay);
     }
 
@@ -93,9 +99,10 @@ public class CollisionHandler : MonoBehaviour
         if (nextScene == SceneManager.sceneCountInBuildSettings)
         {
             nextScene = 0;
-        }
+        } 
 
         SceneManager.LoadScene(nextScene);
+        
     }
 
 
